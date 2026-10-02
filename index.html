@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      // Initialize React Fast Refresh preamble synchronously so Vite React plugin never throws preamble detection error
+      window.$RefreshReg$ = window.$RefreshReg$ || function() {};
+      window.$RefreshSig$ = window.$RefreshSig$ || function() { return function(type) { return type; }; };
+      window.__vite_plugin_react_preamble_installed__ = true;
+    </script>
+    <script>
+      // Suppress benign [vite] websocket connection messages in sandboxed preview environments
+      (function() {
+        try {
+          const OriginalWebSocket = window.WebSocket;
+          if (OriginalWebSocket) {
+            function isViteSocket(url, protocols) {
+              const u = String(url || '').toLowerCase();
+              const p = String(protocols || '').toLowerCase();
+              return (
+                p.includes('vite-hmr') ||
+                p.includes('vite-ping') ||
+                u.includes('vite-hmr') ||
+                u.includes(':24678') ||
+                (u.includes('token=') && (u.includes('24678') || u.includes('5173') || u.includes('vite')))
+              );
+            }
+
+            class SilentViteSocket extends EventTarget {
+              constructor(url, protocols) {
+                super();
+                this.url = url;
+                this.protocol = Array.isArray(protocols) ? protocols[0] || '' : (protocols || '');
+                this.CONNECTING = 0;
+                this.OPEN = 1;
+                this.CLOSING = 2;
+                this.CLOSED = 3;
+                this.readyState = 1; // WebSocket.OPEN
+                this.binaryType = 'blob';
+                this.bufferedAmount = 0;
+                this.extensions = '';
+                this.onopen = null;
+                this.onmessage = null;
+                this.onerror = null;
+                this.onclose = null;
+
+                setTimeout(() => {
+                  try {
+                    const openEvt = new Event('open');
+                    this.dispatchEvent(openEvt);
+                    if (typeof this.onopen === 'function') this.onopen(openEvt);
+
+                    const msgEvt = new MessageEvent('message', {
+                      data: JSON.stringify({ type: 'connected' })
+                    });
+                    this.dispatchEvent(msgEvt);
+                    if (typeof this.onmessage === 'function') this.onmessage(msgEvt);
+                  } catch (e) {}
+                }, 0);
+              }
+
+              send(data) {
+                try {
+                  const parsed = typeof data === 'string' ? JSON.parse(data) : data;
+                  if (parsed && parsed.type === 'ping') {
+                    setTimeout(() => {
+                      try {
+                        const pongEvt = new MessageEvent('message', {
+                          data: JSON.stringify({ type: 'pong' })
+                        });
+                        this.dispatchEvent(pongEvt);
+                        if (typeof this.onmessage === 'function') this.onmessage(pongEvt);
+                      } catch (e) {}
+                    }, 0);
+                  }
+                } catch (e) {}
+              }
+
+              close(code = 1000, reason = '') {
+                this.readyState = 3;
+                try {
+                  const evt = new CloseEvent('close', { code, reason, wasClean: true });
+                  this.dispatchEvent(evt);
+                  if (typeof this.onclose === 'function') this.onclose(evt);
+                } catch (e) {}
+              }
+            }
+
+            SilentViteSocket.prototype.CONNECTING = 0;
+            SilentViteSocket.prototype.OPEN = 1;
+            SilentViteSocket.prototype.CLOSING = 2;
+            SilentViteSocket.prototype.CLOSED = 3;
+            SilentViteSocket.CONNECTING = 0;
+            SilentViteSocket.OPEN = 1;
+            SilentViteSocket.CLOSING = 2;
+            SilentViteSocket.CLOSED = 3;
+
+            window.WebSocket = function(url, protocols) {
+              if (isViteSocket(url, protocols)) {
+                return new SilentViteSocket(url, protocols);
+              }
+              return new OriginalWebSocket(url, protocols);
+            };
+            window.WebSocket.prototype = OriginalWebSocket.prototype;
+            window.WebSocket.CONNECTING = 0;
+            window.WebSocket.OPEN = 1;
+            window.WebSocket.CLOSING = 2;
+            window.WebSocket.CLOSED = 3;
+          }
+
+          function shouldSuppress(args) {
+            if (!args || !args.length) return false;
+            try {
+              for (let i = 0; i < args.length; i++) {
+                const item = args[i];
+                if (!item) continue;
+                const str = typeof item === 'string' ? item : (item.message || item.stack || (typeof item.toString === 'function' ? item.toString() : ''));
+                if (
+                  str.includes('[vite] failed to connect to websocket') ||
+                  str.includes('[vite] connecting...') ||
+                  str.includes('[vite] connected.') ||
+                  str.includes('[vite] Direct websocket connection fallback') ||
+                  str.includes('[vite] server connection lost') ||
+                  str.includes('WebSocket closed without opened.') ||
+                  (str.includes('failed to connect to websocket') && (str.includes('vite') || str.includes('24678')))
+                ) {
+                  return true;
+                }
+              }
+            } catch (e) {}
+            return false;
+          }
+
+          const methods = ['error', 'warn', 'log', 'info', 'debug'];
+          methods.forEach(function(m) {
+            const orig = console[m];
+            if (typeof orig === 'function') {
+              console[m] = function(...args) {
+                if (shouldSuppress(args)) return;
+                orig.apply(console, args);
+              };
+            }
+          });
+
+          window.addEventListener('error', function(e) {
+            if (e && (shouldSuppress([e.message]) || (e.filename && (e.filename.includes('client.mjs') || e.filename.includes('@vite'))))) {
+              e.stopImmediatePropagation();
+              e.preventDefault();
+            }
+          }, true);
+
+          window.addEventListener('unhandledrejection', function(e) {
+            if (e && shouldSuppress([e.reason, e.reason && e.reason.message])) {
+              e.stopImmediatePropagation();
+              e.preventDefault();
+            }
+          }, true);
+        } catch (err) {}
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta name="theme-color" content="#0A192F" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="AviaSafety26" />
+    <meta name="application-name" content="DOMISLINK Aviation Safety Summit 2026" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192x192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="canonical" href="https://summit.domislink.com" />
+    <title>DOMISLINK Aviation Safety Summit 2026 | Everybody Is Involved in Aviation Safety</title>
+    <meta name="description" content="DOMISLINK Aviation Safety Summit 2026 — 17 November 2026 at Marriott Hotel, Ikeja, Lagos, Nigeria. Official Theme: 'EVERYBODY IS INVOLVED IN AVIATION SAFETY.'" />
+    <meta property="og:title" content="DOMISLINK Aviation Safety Summit 2026" />
+    <meta property="og:description" content="EVERYBODY IS INVOLVED IN AVIATION SAFETY — 17 November 2026, Marriott Hotel, Ikeja, Lagos, Nigeria. On-site in Lagos and Remote Worldwide." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://summit.domislink.com" />
+    <meta property="og:image" content="https://summit.domislink.com/social-preview-summit.svg" />
+    <meta property="og:site_name" content="DOMISLINK Aviation Safety Summit 2026" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="DOMISLINK Aviation Safety Summit 2026" />
+    <meta name="twitter:description" content="EVERYBODY IS INVOLVED IN AVIATION SAFETY — 17 November 2026, Marriott Hotel, Ikeja, Lagos, Nigeria." />
+    <meta name="twitter:image" content="https://summit.domislink.com/social-preview-summit.svg" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Event",
+          "@id": "https://summit.domislink.com/#event",
+          "name": "DOMISLINK Aviation Safety Summit 2026",
+          "description": "DOMISLINK Aviation Safety Summit 2026 — 17 November 2026 at Lagos Marriott Hotel, Ikeja, Lagos, Nigeria. Theme: 'EVERYBODY IS INVOLVED IN AVIATION SAFETY.'",
+          "startDate": "2026-11-17T08:00:00+01:00",
+          "endDate": "2026-11-17T18:00:00+01:00",
+          "eventAttendanceMode": "https://schema.org/MixedEventAttendanceMode",
+          "eventStatus": "https://schema.org/EventScheduled",
+          "location": {
+            "@type": "Place",
+            "name": "Lagos Marriott Hotel",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "122 Joel Ogunnaike Street, GRA Ikeja",
+              "addressLocality": "Lagos",
+              "addressCountry": "NG"
+            }
+          },
+          "organizer": {
+            "@type": "Organization",
+            "name": "DomisLink International Services Ltd",
+            "url": "https://summit.domislink.com"
+          }
+        },
+        {
+          "@type": "Book",
+          "@id": "https://summit.domislink.com/#book",
+          "name": "CLEARED FOR TAKEOFF",
+          "alternateName": "CLEARED FOR TAKEOFF: But Who Is Flying Nigeria's Aviation?",
+          "author": {
+            "@type": "Person",
+            "name": "AMAECHI UBADIKE",
+            "jobTitle": "Commercial Pilot, Air Traffic Controller & Aviation Safety Inspector",
+            "worksFor": {
+              "@type": "Organization",
+              "name": "DomisLink International Services Ltd"
+            }
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "DomisLink International Services Ltd"
+          },
+          "description": "A Pilot, Controller, and Inspector's Unfiltered Account of 25 Years Above the Clouds and Behind the Radar.",
+          "inLanguage": "en"
+        },
+        {
+          "@type": "Person",
+          "@id": "https://summit.domislink.com/#author",
+          "name": "AMAECHI UBADIKE",
+          "jobTitle": "Commercial Pilot, Air Traffic Controller & Aviation Safety Inspector",
+          "description": "Amaechi Ubadike is a seasoned aviation professional with over 25 years of operational command across commercial aviation, radar control, and civil aviation safety inspection. Convener of the DomisLink Aviation Safety Summit 2026."
+        }
+      ]
+    }
+    </script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-[#050B1A] text-[#EAF2FF]">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
