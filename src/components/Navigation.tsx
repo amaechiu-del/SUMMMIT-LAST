@@ -53,6 +53,7 @@ export default function Navigation({ onNavigate, activeSection, onOpenAdmin }: N
     { id: 'everybody-involved', label: 'Aviation Safety' },
     { id: 'safety-library', label: 'Safety Library' },
     { id: 'challenge', label: 'Memo Challenge' },
+    { id: 'book', label: 'Book Launch' },
     { id: 'domislink-bookstore', label: 'Bookstore' },
     { id: 'podcast', label: 'Live Radio & Podcast' },
     { id: 'marketplace', label: 'Sponsor' },

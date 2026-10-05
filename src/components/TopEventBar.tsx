@@ -55,7 +55,7 @@ export default function TopEventBar({ onNavigate }: TopEventBarProps) {
               Memoir Challenge
             </button>
             <button
-              onClick={() => onNavigate('book-launch')}
+              onClick={() => onNavigate('book')}
               className="text-amber-300 hover:text-white transition-colors flex items-center space-x-1 font-semibold"
             >
               <Sparkles className="h-3 w-3 text-[#D4AF37]" />

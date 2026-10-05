@@ -9,12 +9,35 @@ import {
   Wrench, TrendingUp, Award, HeartHandshake, BookOpen, 
   Flame, Compass, Cpu, CheckCircle2, Sliders, Layers, 
   Zap, Clock, Sparkles, ChevronRight, UserCheck, ShieldAlert,
-  Info
+  Info, DollarSign, Coins, Building2, User, Mail, Phone, PieChart
 } from 'lucide-react';
 
 export default function SimulationTraining() {
   const [activeTab, setActiveTab] = useState<'all' | 'operations' | 'human-factors' | 'scenarios'>('all');
   const [selectedStep, setSelectedStep] = useState<number | null>(null);
+
+  // Illustrative Simulator Fleet Partnership & EOI State
+  const [partnershipTier, setPartnershipTier] = useState<'AIRLINE' | 'INSTITUTIONAL' | 'INDIVIDUAL'>('AIRLINE');
+  const [unitCount, setUnitCount] = useState<number>(100);
+  const [investorName, setInvestorName] = useState('');
+  const [investorEmail, setInvestorEmail] = useState('');
+  const [investorPhone, setInvestorPhone] = useState('');
+  const [eoiSuccess, setEoiSuccess] = useState<string | null>(null);
+
+  const unitNominalPriceUSD = 100;
+  const fxRateUSDNGN = 1500;
+  const unitNominalPriceNGN = unitNominalPriceUSD * fxRateUSDNGN; // 150,000 NGN per unit ($100 @ 1,500 NGN/USD)
+  const totalCostUSD = unitCount * unitNominalPriceUSD;
+  const totalCostNGN = unitCount * unitNominalPriceNGN;
+  const illustrativeAnnualReturnUSD = totalCostUSD * 0.22;
+  const illustrativeAnnualReturnNGN = totalCostNGN * 0.22;
+
+  const handleEoiSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!investorName.trim() || !investorEmail.trim() || unitCount <= 0) return;
+    const eoiId = `DLK-EOI-${Math.floor(100000 + Math.random() * 900000)}`;
+    setEoiSuccess(eoiId);
+  };
 
   // Instructional Visual Loop Steps (Strictly following the mandated sequence)
   const instructionalFlow = [
@@ -459,6 +482,279 @@ export default function SimulationTraining() {
                 Multi-position radar emulation for tower, terminal, and en-route controllers to drill airspace separation, emergency vectoring, and runway incursions.
               </p>
             </div>
+          </div>
+        </div>
+
+        {/* ========================================================================= */}
+        {/* FLIGHT SIMULATOR FLEET — ILLUSTRATIVE OPERATIONAL & PARTNERSHIP MODEL (EOI) */}
+        {/* ========================================================================= */}
+        <div className="mt-16 bg-gradient-to-br from-[#071324] via-[#0A192F] to-[#071324] text-white rounded-2xl border-2 border-[#D4AF37]/50 p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#D4AF37]/10 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div className="max-w-4xl mx-auto space-y-8 relative z-10">
+            
+            <div className="text-center space-y-3">
+              <span className="px-3.5 py-1 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37]/40 text-[#D4AF37] text-xs font-mono font-bold uppercase tracking-wider">
+                ILLUSTRATIVE PLANNING MODEL // SIMULATOR FLEET EXPANSION
+              </span>
+              <h3 className="text-2xl sm:text-4xl font-serif font-black tracking-tight uppercase text-white">
+                Flight Simulator Capacity Expansion — <span className="text-[#D4AF37]">Illustrative Operational Model</span>
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 font-light max-w-2xl mx-auto leading-relaxed">
+                Aviation safety training is a recurring statutory requirement. Explore the illustrative operational economics of Domislink’s Level D Full Flight Simulator expansion project for commercial airlines, training centers, and industry partners.
+              </p>
+            </div>
+
+            {/* Mandatory Regulatory & Legal Disclaimer */}
+            <div className="bg-amber-950/40 border border-amber-500/40 rounded-xl p-4 sm:p-5 text-xs text-amber-200/90 space-y-2">
+              <div className="flex items-center space-x-2 font-bold uppercase tracking-wider text-amber-300">
+                <ShieldAlert className="h-4 w-4 shrink-0 text-amber-400" />
+                <span>Regulatory &amp; Legal Notice — Illustrative Scenario Only</span>
+              </div>
+              <p className="text-[11px] leading-relaxed text-amber-100/80">
+                <strong>Illustrative financial scenario — not a guarantee of investment performance.</strong> This presentation is an exploratory expression of interest (EOI) for industry planning purposes and does not constitute a public offering of securities, financial promotion, or prospectus under SEC regulations. Operational assumptions (utilization, rates, margins) are non-binding projections subject to formal due diligence and definitive commercial agreements.
+              </p>
+            </div>
+
+            {/* Profitability Financial Model Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-[#050C17] border border-[#D4AF37]/30 rounded-xl p-5 space-y-2 text-center">
+                <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block">Average Hourly Rate</span>
+                <span className="text-2xl font-black text-[#D4AF37] font-mono">$750</span>
+                <span className="text-[11px] text-slate-300 block">Per Block Hour (Level D FFS)</span>
+              </div>
+              <div className="bg-[#050C17] border border-[#D4AF37]/30 rounded-xl p-5 space-y-2 text-center">
+                <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block">Annual Utilization</span>
+                <span className="text-2xl font-black text-sky-400 font-mono">3,800 Hrs</span>
+                <span className="text-[11px] text-slate-300 block">~10.4 Hours/Day per Bay</span>
+              </div>
+              <div className="bg-[#050C17] border border-[#D4AF37]/30 rounded-xl p-5 space-y-2 text-center">
+                <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block">Projected Gross Revenue</span>
+                <span className="text-2xl font-black text-[#D4AF37] font-mono">$2,850,000</span>
+                <span className="text-[11px] text-slate-300 block">3,800 hrs × $750/hr per Bay</span>
+              </div>
+              <div className="bg-[#050C17] border border-[#D4AF37]/30 rounded-xl p-5 space-y-2 text-center">
+                <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block">Gross Operating Margin</span>
+                <span className="text-2xl font-black text-emerald-400 font-mono">72%</span>
+                <span className="text-[11px] text-slate-300 block">$2,052,000 EBITDA / Bay</span>
+              </div>
+            </div>
+
+            <div className="bg-[#050C17]/80 border border-white/10 rounded-xl p-3 text-center text-xs text-slate-300 font-mono">
+              <span className="text-[#D4AF37] font-bold">Target Return Metric:</span> Illustrative 22% Target Annual ROI Scenario (Projections are illustrative targets, not guaranteed returns; distributions subject to operating reserves and board approval).
+            </div>
+
+            {/* Partnership Tiers */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-[#050C17] border border-[#D4AF37]/40 rounded-xl p-6 space-y-4 flex flex-col justify-between">
+                <div className="space-y-3">
+                  <span className="text-[10px] font-mono bg-amber-500/15 text-amber-300 border border-amber-500/30 px-2.5 py-0.5 rounded font-bold">
+                    TIER 1 • AIRLINE OPERATORS
+                  </span>
+                  <h4 className="text-lg font-bold text-white font-serif">Airline Fleet Partner</h4>
+                  <p className="text-xs text-slate-300 font-light leading-relaxed">
+                    Designed for scheduled and charter airlines seeking guaranteed recurrent training capacity and volume rebates.
+                  </p>
+                  <ul className="space-y-1.5 text-xs text-slate-300 font-mono">
+                    <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37]" /> Min. 500 Units ($50,000 / ₦75M)</li>
+                    <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37]" /> 25% Recurrent Training Rebate</li>
+                    <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37]" /> Priority Bay Scheduling Rights</li>
+                  </ul>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => { setPartnershipTier('AIRLINE'); setUnitCount(500); }}
+                  className="w-full py-2 bg-[#D4AF37] hover:bg-[#B89025] text-[#0A192F] font-bold text-xs uppercase tracking-wider rounded-lg transition cursor-pointer"
+                >
+                  Select Tier 1
+                </button>
+              </div>
+
+              <div className="bg-[#050C17] border border-emerald-500/50 rounded-xl p-6 space-y-4 flex flex-col justify-between ring-2 ring-emerald-500/20">
+                <div className="space-y-3">
+                  <span className="text-[10px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2.5 py-0.5 rounded font-bold">
+                    TIER 2 • INSTITUTIONAL / CORPORATE
+                  </span>
+                  <h4 className="text-lg font-bold text-white font-serif">Corporate Participant</h4>
+                  <p className="text-xs text-slate-300 font-light leading-relaxed">
+                    Designed for aviation funds, technical service organizations, and institutions seeking exposure to synthetic flight assets.
+                  </p>
+                  <ul className="space-y-1.5 text-xs text-slate-300 font-mono">
+                    <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Min. 250 Units ($25,000 / ₦37.5M)</li>
+                    <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Quarterly Operational Review</li>
+                    <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Technical Advisory Eligibility</li>
+                  </ul>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => { setPartnershipTier('INSTITUTIONAL'); setUnitCount(250); }}
+                  className="w-full py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs uppercase tracking-wider rounded-lg transition cursor-pointer"
+                >
+                  Select Tier 2
+                </button>
+              </div>
+
+              <div className="bg-[#050C17] border border-sky-500/40 rounded-xl p-6 space-y-4 flex flex-col justify-between">
+                <div className="space-y-3">
+                  <span className="text-[10px] font-mono bg-sky-500/20 text-sky-300 border border-sky-500/40 px-2.5 py-0.5 rounded font-bold">
+                    TIER 3 • INDIVIDUAL INDUSTRY PARTICIPANT
+                  </span>
+                  <h4 className="text-lg font-bold text-white font-serif">Individual Aviation Partner</h4>
+                  <p className="text-xs text-slate-300 font-light leading-relaxed">
+                    Designed for aviation professionals, pilots, and engineers participating in regional training facility localization.
+                  </p>
+                  <ul className="space-y-1.5 text-xs text-slate-300 font-mono">
+                    <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-sky-400" /> Min. 10 Units ($1,000 / ₦1,500,000)</li>
+                    <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-sky-400" /> Annual Operational Report</li>
+                    <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-sky-400" /> Facility Inspection &amp; Tour</li>
+                  </ul>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => { setPartnershipTier('INDIVIDUAL'); setUnitCount(10); }}
+                  className="w-full py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs uppercase tracking-wider rounded-lg transition cursor-pointer"
+                >
+                  Select Tier 3
+                </button>
+              </div>
+            </div>
+
+            {/* Interactive Partnership Calculator & Expression of Interest Form */}
+            <div className="bg-[#050C17] border border-[#D4AF37]/30 rounded-xl p-6 sm:p-8 space-y-6">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-4">
+                <div>
+                  <h4 className="text-lg font-serif font-bold text-white uppercase">Illustrative Partnership &amp; Cost Calculator</h4>
+                  <p className="text-xs text-slate-400">Illustrative financial modeling based on $100 (₦150,000) nominal baseline per unit at ₦1,500/USD.</p>
+                </div>
+                <div className="text-right font-mono">
+                  <span className="text-xs text-slate-400 block">FX Reference: $1 USD = ₦1,500 NGN</span>
+                  <span className="text-xs text-[#D4AF37] font-bold">Selected Tier: {partnershipTier}</span>
+                </div>
+              </div>
+
+              {eoiSuccess ? (
+                <div className="p-6 bg-emerald-950/40 border border-emerald-500/40 rounded-xl text-center space-y-3">
+                  <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
+                    <CheckCircle2 className="w-6 h-6" />
+                  </div>
+                  <h4 className="text-base font-bold text-white">Expression of Interest (EOI) Logged Successfully</h4>
+                  <p className="text-xs text-slate-300 font-mono">EOI Reference: {eoiSuccess}</p>
+                  <p className="text-xs text-slate-300 max-w-lg mx-auto leading-relaxed">
+                    Thank you, {investorName}. Your preliminary inquiry has been registered with the Domislink Secretariat Investment Desk. A technical representative will contact you via {investorEmail} with the project memorandum and regulatory documentation. Note: This EOI is non-binding and does not constitute a public offering of securities.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setEoiSuccess(null)}
+                    className="px-5 py-2 bg-[#D4AF37] text-[#0A192F] font-bold text-xs uppercase rounded-lg cursor-pointer"
+                  >
+                    Submit Another Inquiry
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleEoiSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-xs font-mono text-slate-300 uppercase mb-2">
+                          Project Units ({unitCount} Units Selected)
+                        </label>
+                        <input
+                          type="range"
+                          min="10"
+                          max="2000"
+                          step="10"
+                          value={unitCount}
+                          onChange={(e) => setUnitCount(Number(e.target.value))}
+                          className="w-full accent-[#D4AF37] cursor-pointer"
+                        />
+                        <div className="flex justify-between text-[10px] font-mono text-slate-400 mt-1">
+                          <span>10 Units ($1k / ₦1.5M)</span>
+                          <span>1,000 Units ($100k / ₦150M)</span>
+                          <span>2,000 Units ($200k / ₦300M)</span>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-[10px] font-mono text-slate-400 uppercase mb-1">Total Indicative Cost (USD)</label>
+                          <div className="p-3 bg-[#0A192F] border border-white/10 rounded-xl font-mono text-lg font-black text-[#D4AF37]">
+                            ${totalCostUSD.toLocaleString()}
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-mono text-slate-400 uppercase mb-1">Total Indicative Cost (NGN)</label>
+                          <div className="p-3 bg-[#0A192F] border border-white/10 rounded-xl font-mono text-lg font-black text-white">
+                            ₦{totalCostNGN.toLocaleString()}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="p-4 bg-emerald-950/30 border border-emerald-500/30 rounded-xl space-y-1">
+                        <span className="text-[10px] font-mono text-emerald-400 uppercase font-bold block">
+                          Illustrative Annual Return Target (22% Target ROI Scenario)
+                        </span>
+                        <span className="text-xl font-black text-emerald-300 font-mono">
+                          ${illustrativeAnnualReturnUSD.toLocaleString()} USD (₦{illustrativeAnnualReturnNGN.toLocaleString()}) / Year
+                        </span>
+                        <span className="text-[10px] text-slate-400 block italic">
+                          * Illustrative target based on modeled 72% EBITDA margin at 3,800 annual hours. Not guaranteed.
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4 bg-[#0A192F] p-5 rounded-xl border border-white/10">
+                      <h5 className="text-xs font-mono text-[#D4AF37] uppercase font-bold">Partner Contact &amp; Expression of Interest (EOI)</h5>
+                      
+                      <div>
+                        <label className="block text-[10px] font-mono text-slate-300 uppercase mb-1">Full Name / Corporate Entity *</label>
+                        <input
+                          type="text"
+                          required
+                          value={investorName}
+                          onChange={(e) => setInvestorName(e.target.value)}
+                          placeholder="e.g. AeroSky Airlines Nigeria Ltd"
+                          className="w-full bg-[#050C17] border border-white/15 rounded-lg p-2.5 text-xs text-white focus:border-[#D4AF37] focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-mono text-slate-300 uppercase mb-1">Email Address *</label>
+                        <input
+                          type="email"
+                          required
+                          value={investorEmail}
+                          onChange={(e) => setInvestorEmail(e.target.value)}
+                          placeholder="partner@airline.com"
+                          className="w-full bg-[#050C17] border border-white/15 rounded-lg p-2.5 text-xs text-white focus:border-[#D4AF37] focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-mono text-slate-300 uppercase mb-1">Phone Number *</label>
+                        <input
+                          type="text"
+                          required
+                          value={investorPhone}
+                          onChange={(e) => setInvestorPhone(e.target.value)}
+                          placeholder="+234 803..."
+                          className="w-full bg-[#050C17] border border-white/15 rounded-lg p-2.5 text-xs text-white focus:border-[#D4AF37] focus:outline-none"
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        className="w-full py-3 bg-gradient-to-r from-[#D4AF37] to-[#B89025] hover:from-[#B89025] hover:to-[#9E781C] text-[#0A192F] font-bold rounded-xl text-xs uppercase tracking-widest transition shadow-lg cursor-pointer"
+                      >
+                        Submit Expression of Interest (EOI)
+                      </button>
+                    </div>
+
+                  </div>
+                </form>
+              )}
+            </div>
+
           </div>
         </div>
 
